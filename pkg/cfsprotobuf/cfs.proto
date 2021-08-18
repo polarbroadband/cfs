@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+option go_package = "github.com/polarbroadband/cfs/pkg/cfsprotobuf";
+
+package cfsprotobuf;
+
+// stateless gnmi probe service
+service cfs {
+  // healthckeck
+  rpc Healtz (HealtzReq) returns (SvrStat) {}
+  // load Spirent tc file to chassis
+  rpc LoadSpirentTC (LoadSpirentFileRequest) returns (FileCheckSum) {}
+  // SCP file to remote host
+  rpc SCP (SCPFileRequest) returns (FileCheckSum) {}
+  // check if file exist on CFS server
+  rpc CheckFile (CheckFileRequest) returns (FileCheckSum) {}
+}
+
+message FileCheckSum {
+  string ChkSum = 1;
+}
+
+message LoadSpirentFileRequest {
+  string FilePath = 1;
+  string FileName = 2;
+  string SpirentURL = 3;
+  string SessionID = 4;
+}
+
+message SCPFileRequest {
+  string FilePath = 1;
+  string FileName = 2;
+  string Host = 3;
+  string RemoteFilePath = 4;
+  string Usr = 5;
+  string Pwd = 6;
+}
+
+message CheckFileRequest {
+  string FilePath = 1;
+  string FileName = 2;
+  string ChkSum = 3;
+}
+
+message SvrStat {
+  string Host = 1;
+  string Release = 2;
+  int64 Load = 3;
+}
+
+message HealtzReq {
+}

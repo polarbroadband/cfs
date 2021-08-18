@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+
+  cfs:
+    build:
+      context: ../server
+      dockerfile: Dockerfile
+    env_file:
+      - ./dev.env
+    volumes:
+      - ./key/cert/ca.cer:/cert/ca.cer
+      - ./key/cert/cfs.cer:/cert/cfs.cer
+      - ./key/private/cfs.key:/cert/cfs.key
+      - ./share:/share
+      - ../server:/appsrc
+    command: tail -f /dev/null
+
+  clnt:
+    build:
+      context: ./clnt
+      dockerfile: Dockerfile
+    env_file:
+      - ./dev.env
+    volumes:
+      - ./key/cert/ca.cer:/cert/ca.cer
+      - ./clnt:/appsrc
+    command: tail -f /dev/null
